@@ -27,11 +27,6 @@ type gameStateType = {
 let getNextPosition currentDirection =>
   if (key_pressed ()) {
     let curChar = read_key ();
-    /* let (curX, curY) = current_point ();
-       moveto 200 10;
-       set_text_size 14;
-       draw_string (sprintf "%c" curChar);
-       moveto curX curY; */
     switch curChar {
     | 'w' => Up
     | 's' => Down
@@ -47,7 +42,7 @@ let printMessage msg => {
   set_color red;
   let (curX, curY) = current_point ();
   moveto 200 10;
-  set_text_size 38;
+  set_text_size 28;
   draw_string (sprintf "%s" msg);
   moveto curX curY
 };
@@ -147,8 +142,8 @@ let rec mainLoop i (gameState: gameStateType) => {
         fun () =>
           mainLoop (i + 1) {direction: nextDirection, position: nextPosition, apples: nextApples}
       )
-  | Some _ => {
-    let rec loopAndCountDown x => {
+  | Some _ =>
+    let rec loopAndCountDown x =>
       if (x == 0) {
         mainLoop 0 (genNewState ())
       } else {
@@ -156,11 +151,9 @@ let rec mainLoop i (gameState: gameStateType) => {
         drawSnake gameState.position;
         drawApple gameState.apples;
         printMessage (sprintf "You lose - Restarting in %d seconds" x);
-        busyLoop 1.0 (fun () => loopAndCountDown (x - 1));
-      }
-    };
-    loopAndCountDown 5;
-  }
+        busyLoop 1.0 (fun () => loopAndCountDown (x - 1))
+      };
+    loopAndCountDown 5
   }
 };
 
